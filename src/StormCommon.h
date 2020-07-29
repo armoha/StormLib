@@ -47,6 +47,9 @@
   #include <bzlib.h>
 #endif
 
+// Include functions from Zopfli
+#include "zopfli/deflate.h"
+
 //-----------------------------------------------------------------------------
 // Cryptography support
 

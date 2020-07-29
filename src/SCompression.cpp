@@ -582,6 +582,37 @@ static int Decompress_LZMA_MPK(void * pvOutBuffer, int * pcbOutBuffer, void * pv
 
 /******************************************************************************/
 /*                                                                            */
+/*  Support functions for ZOPFLI compression (0x1B)                           */
+/*                                                                            */
+/******************************************************************************/
+
+void Compress_ZOPFLI(void *pvOutBuffer, int *pcbOutBuffer, void *pvInBuffer, int cbInBuffer, int *pCmpType, int nCmpLevel)
+{
+    ZopfliOptions z;
+    Byte *outBuffer = (Byte *)pvOutBuffer;
+    SizeT inLen = cbInBuffer;
+    SizeT outLen = *pcbOutBuffer;
+    Byte bp = 0;
+
+    ZopfliInitOptions(&z);
+
+    // Keep compilers happy
+    STORMLIB_UNUSED(pCmpType);
+    STORMLIB_UNUSED(nCmpLevel);
+
+    // Initialize the compression.
+    ZopfliDeflate(&z,
+                   2,
+                   1,
+                   (Byte *)pvInBuffer,
+                   inLen,
+                   &bp,
+                   &outBuffer,
+                   &outLen);
+}
+
+/******************************************************************************/
+/*                                                                            */
 /*  Support functions for SPARSE compression (0x20)                           */
 /*                                                                            */
 /******************************************************************************/
@@ -762,6 +793,7 @@ static TCompressTable cmp_table[] =
     {MPQ_COMPRESSION_ADPCM_STEREO, Compress_ADPCM_stereo},  // IMA ADPCM stereo compression
     {MPQ_COMPRESSION_HUFFMANN,     Compress_huff},          // Huffmann compression
     {MPQ_COMPRESSION_ZLIB,         Compress_ZLIB},          // Compression with the "zlib" library
+    {MPQ_COMPRESSION_ZOPFLI,       Compress_ZOPFLI},        // Zopfli compression
     {MPQ_COMPRESSION_PKWARE,       Compress_PKLIB},         // Compression with Pkware DCL
     {MPQ_COMPRESSION_BZIP2,        Compress_BZIP2}          // Compression Bzip2 library
 };
@@ -800,6 +832,12 @@ int WINAPI SCompCompress(void * pvOutBuffer, int * pcbOutBuffer, void * pvInBuff
     {
         CompressFuncArray[0] = Compress_LZMA;
         CompressByte[0] = (char)uCompressionMask;
+        nCompressCount = 1;
+    }
+    else if(uCompressionMask == MPQ_COMPRESSION_ZOPFLI)
+    {
+        CompressFuncArray[0] = Compress_ZOPFLI;
+        CompressByte[0] = MPQ_COMPRESSION_ZLIB;
         nCompressCount = 1;
     }
     else

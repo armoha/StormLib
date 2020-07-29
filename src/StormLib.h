@@ -265,6 +265,7 @@ extern "C" {
 #define MPQ_COMPRESSION_ADPCM_MONO        0x40  // IMA ADPCM compression (mono)
 #define MPQ_COMPRESSION_ADPCM_STEREO      0x80  // IMA ADPCM compression (stereo)
 #define MPQ_COMPRESSION_LZMA              0x12  // LZMA compression. Added in Starcraft 2. This value is NOT a combination of flags.
+#define MPQ_COMPRESSION_ZOPFLI            0x1B  // Zopfli compression
 #define MPQ_COMPRESSION_NEXT_SAME   0xFFFFFFFF  // Same compression
 
 // Constants for SFileAddWave

@@ -22,6 +22,15 @@ set(SRC_FILES
            src/pklib/explode.c
            src/pklib/implode.c
            src/sparse/sparse.cpp
+           src/zopfli/blocksplitter.c
+           src/zopfli/cache.c
+           src/zopfli/deflate.c
+           src/zopfli/hash.c
+           src/zopfli/katajainen.c
+           src/zopfli/lz77.c
+           src/zopfli/squeeze.c
+           src/zopfli/tree.c
+           src/zopfli/util.c
            src/FileStream.cpp
            src/SBaseCommon.cpp
            src/SBaseDumpData.cpp
